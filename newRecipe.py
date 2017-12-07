@@ -53,7 +53,7 @@ def makeRecipe():
 
     generated = ''
     base = "".join(recipes[start_index])
-    generated += base
+    generated += base + "\n"
     #sys.stdout.write(generated + "\n")
     diversity = 1.0
     
@@ -78,29 +78,20 @@ def makeRecipe():
 def recept(bot, update):
     update.message.reply_text(makeRecipe())
 
-def start(bot, update):
-    """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi!')
-
-
-def error(bot, update, error):
-    """Log Errors caused by Updates."""
-    logger.warning('Update "%s" caused error "%s"', update, error)
-
 def main():
-    updater = Updater("372664567:AAHckAc1ZkuCXzazZYWulk-T6scbaU5gEzo")
+    apikey = open("APIKeyHolder.txt", "r").read()
+    updater = Updater(apikey.rstrip())
 
     dp = updater.dispatcher
 
-    dp.add_handler(CommandHandler("recept", recept))
+    #dp.add_handler(CommandHandler("recept", recept))
 
-    #dp.add_handler(MessageHandler(Filters.text, makeRecipe))
-    dp.add_error_handler(error)
+    dp.add_handler(MessageHandler(Filters.text, recept))
 
     updater.start_polling()
 
     updater.idle()
 
-
-main()
+if __name__ == '__main__':
+    main()
 
