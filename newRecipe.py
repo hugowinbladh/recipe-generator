@@ -3,6 +3,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 import random
 import sys
+import re
 import numpy as np
 
 
@@ -48,11 +49,17 @@ def sample(preds, temperature=1.0):
     probas = np.random.multinomial(1, preds, 1)
     return np.argmax(probas)
 
-def makeRecipe():
+def makeRecipe(seed):
     start_index = random.randint(0, len(recipes) - max_ingredients - 1)
+    if len(seed) > 0:
+        r = re.compile("/"+seed+"/")
+        matches = filter(r.match, recipes)
+        if len(matches) > 0:
+            start_index = recipes.index(random.choice(matches))
 
     generated = ''
     base = "".join(recipes[start_index])
+    print(base)
     generated += base + "\n"
     #sys.stdout.write(generated + "\n")
     diversity = 1.0
@@ -74,9 +81,12 @@ def makeRecipe():
         #sys.stdout.write(next_char + "\n")
         #sys.stdout.flush()
     return generated
+print(makeRecipe("paprika"))
 
 def recept(bot, update):
-    update.message.reply_text(makeRecipe())
+    dank = makeRecipe(update.message.text)
+    update.message.reply_text(dank)
+    
 
 def main():
     apikey = open("APIKeyHolder.txt", "r").read()
@@ -93,5 +103,6 @@ def main():
     updater.idle()
 
 if __name__ == '__main__':
-    main()
+    print(makeRecipe("kyckling"))
+
 
