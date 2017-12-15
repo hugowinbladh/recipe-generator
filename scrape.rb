@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'httparty'
 require 'sqlite3'
 
-page = HTTParty.get "https://www.koket.se/mat/ingredienser/korv"
+page = HTTParty.get "https://www.koket.se/mat/varldens-kok/mat-fran-mellanostern"
 urls = page.scan(/(?<=<h2><a href="\/)([^"]*)/)
 
 open("output.txt", "a") do |f|

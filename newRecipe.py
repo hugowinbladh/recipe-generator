@@ -52,16 +52,15 @@ def sample(preds, temperature=1.0):
 def makeRecipe(seed):
     start_index = random.randint(0, len(recipes) - max_ingredients - 1)
     if len(seed) > 0:
-        r = re.compile("/"+seed+"/")
+        r = re.compile(".*" + seed + "*.")
         matches = filter(r.match, recipes)
         if len(matches) > 0:
             start_index = recipes.index(random.choice(matches))
 
     generated = ''
-    base = "".join(recipes[start_index])
+    base = recipes[start_index]
     print(base)
     generated += base + "\n"
-    #sys.stdout.write(generated + "\n")
     diversity = 1.0
     
     for i in range(15):
@@ -78,13 +77,11 @@ def makeRecipe(seed):
         base = base.split("\n")[1:]
         base.append(next_char)
         base = "\n".join(base)
-        #sys.stdout.write(next_char + "\n")
-        #sys.stdout.flush()
     return generated
 print(makeRecipe("paprika"))
 
-def recept(bot, update):
-    dank = makeRecipe(update.message.text)
+def recept(bot, update, args):
+    dank = makeRecipe(args[0])
     update.message.reply_text(dank)
     
 
@@ -94,15 +91,15 @@ def main():
 
     dp = updater.dispatcher
 
-    #dp.add_handler(CommandHandler("recept", recept))
+    dp.add_handler(CommandHandler("recept", recept, pass_args=True))
 
-    dp.add_handler(MessageHandler(Filters.text, recept))
+    #dp.add_handler(MessageHandler(Filters.text, recept))
 
     updater.start_polling()
 
     updater.idle()
 
 if __name__ == '__main__':
-    print(makeRecipe("kyckling"))
+    main()
 
 
