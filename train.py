@@ -57,7 +57,7 @@ def sample(preds, temperature=1.0):
     probas = np.random.multinomial(1, preds, 1)
     return np.argmax(probas)
 
-for iteration in range(1,60):
+for iteration in range(1,500):
     print("iteration", iteration)
     model.fit(x,y, batch_size=128, epochs=1)
     start_index = random.randint(0, len(recipes) - max_ingredients - 1)
