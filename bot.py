@@ -81,8 +81,11 @@ def makeRecipe(seed):
 print(makeRecipe("paprika"))
 
 def recept(bot, update, args):
-    dank = makeRecipe(args[0])
-    update.message.reply_text(dank)
+    if args:
+    	seed = makeRecipe(args[0])
+    else:
+	seed = makeRecipe("")
+    update.message.reply_text(seed)
     
 
 def main():
