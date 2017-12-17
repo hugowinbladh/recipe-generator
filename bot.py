@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from keras.models import load_model
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
@@ -78,7 +79,9 @@ def makeRecipe(seed):
         base.append(next_char)
         base = "\n".join(base)
     return generated
-print(makeRecipe("paprika"))
+
+def start(bot, update):
+    update.message.reply_text("ayy yo mah Ni🅱️🅱️a!! I see you ain't good at findin' ya own recipes, well let me help ya! \n\n Just type /recept and I will make you a unique but random recipe \n\n If ya got an ingredient u wanna use, then type /recipe <ingredient> and i will include that in mah recipe for U! Happy cooking ni🅱️🅱️a!")
 
 def recept(bot, update, args):
     if args:
@@ -94,9 +97,10 @@ def main():
 
     dp = updater.dispatcher
 
+    dp.add_handler(CommandHandler("start", start))
+
     dp.add_handler(CommandHandler("recept", recept, pass_args=True))
 
-    #dp.add_handler(MessageHandler(Filters.text, recept))
 
     updater.start_polling()
 
@@ -104,5 +108,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 
